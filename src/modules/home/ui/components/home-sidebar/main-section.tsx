@@ -47,7 +47,7 @@ const MainSection = () => {
                 onClick={() => {}} //TODO add onClick
               />
               <Link href={item.href} className="flex items-center gap-4">
-                <item.icon />
+                <item.icon /> {/* Render the icon component */}
                 <span className="text-sm">{item.title}</span>
               </Link>
             </SidebarMenuItem>
