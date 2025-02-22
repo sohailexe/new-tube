@@ -7,9 +7,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Item } from "@radix-ui/react-select";
 import { FlameIcon, HomeIcon, PlaySquareIcon } from "lucide-react";
 import Link from "next/link";
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 const items = [
   {
@@ -31,25 +31,32 @@ const items = [
 ];
 
 const MainSection = () => {
+  const { isSignedIn } = useAuth();
+  const clerk = useClerk();
   return (
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem
-              key={item.title}
-              className="py-1 hover:bg-gray-100"
-            >
+            <SidebarMenuItem key={item.title} className="py-1">
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
                 isActive={false} //TODO add active state
-                onClick={() => {}} //TODO add onClick
-              />
-              <Link href={item.href} className="flex items-center gap-4">
-                <item.icon /> {/* Render the icon component */}
-                <span className="text-sm">{item.title}</span>
-              </Link>
+                onClick={(e) => {
+                  if (item.auth && !isSignedIn) {
+                    e.preventDefault();
+                    return clerk.openSignIn({
+                      afterSignInUrl: item.href,
+                    });
+                  }
+                }}
+              >
+                <Link href={item.href} className="flex items-center  gap-4">
+                  <item.icon /> {/* Render the icon component */}
+                  <span className="text-sm">{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

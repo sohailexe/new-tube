@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { HistoryIcon, ListVideoIcon, ThumbsUp } from "lucide-react";
 import Link from "next/link";
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 const items = [
   {
@@ -33,26 +34,33 @@ const items = [
 ];
 
 const PersonalSection = () => {
+  const { isSignedIn } = useAuth();
+  const clerk = useClerk();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>You</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem
-              key={item.title}
-              className="py-1 hover:bg-gray-100"
-            >
+            <SidebarMenuItem key={item.title} className="py-1 ">
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
                 isActive={false} //TODO add active state
-                onClick={() => {}} //TODO add onClick
-              />
-              <Link href={item.href} className="flex items-center gap-4">
-                <item.icon /> {/* Render the icon component */}
-                <span className="text-sm">{item.title}</span>
-              </Link>
+                onClick={(e) => {
+                  if (item.auth && !isSignedIn) {
+                    e.preventDefault();
+                    return clerk.openSignIn({
+                      afterSignInUrl: item.href,
+                    });
+                  }
+                }}
+              >
+                <Link href={item.href} className="flex items-center gap-4">
+                  <item.icon /> {/* Render the icon component */}
+                  <span className="text-sm">{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
