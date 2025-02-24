@@ -1,6 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
+import { db } from '@/db'//its created from drizzle
 
 export async function POST(req: Request) {
 const SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET
@@ -47,10 +48,23 @@ const SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET
 
   // Do something with payload
   // For this guide, log payload to console
-  const { id } = evt.data
+  const {data} = evt
   const eventType = evt.type
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
-  console.log('Webhook payload:', body)
+  // console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
+  // console.log('Webhook payload:', body)
+  
+
+  if(eventType === 'user.created'){
+    // await db
+    console.log('User created:')
+  } else if(eventType === 'user.updated'){
+    console.log('User updated:')
+  } else if(eventType === 'user.deleted'){
+    console.log('User deleted:')
+  } else {
+    console.log('Unknown event type:', eventType)
+  }
+
 
   return new Response('Webhook received', { status: 200 })
 }
