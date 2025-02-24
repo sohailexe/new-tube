@@ -2,8 +2,10 @@
   "name": "new-tube",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+  "scripts": {    
     "dev": "next dev",
+    "dev:webhook": "ngrok http --url=trivially-still-grizzly.ngrok-free.app 3000",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:webhook\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -42,6 +44,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "concurrently": "^9.1.2",
     "date-fns": "^3.6.0",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.39.0",
