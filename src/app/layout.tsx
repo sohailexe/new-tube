@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCProvider } from "@/trpc/client";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function RootLayout({
           className={`${inter.className} 
         antialiased`}
         >
-          {children}
+          <TRPCProvider>{children}</TRPCProvider>
         </body>
       </html>
     </ClerkProvider>
