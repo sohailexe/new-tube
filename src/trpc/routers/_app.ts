@@ -12,17 +12,6 @@ export const appRouter = createTRPCRouter({
         greeting: `hello ${opts.input.text}`,
       };
     }),
-
-
-    Sohail: baseProcedure
-    .input(
-      z.string(),
-    )
-    .query((opts) => {
-      return {
-        greeting: `Sohail ${opts.input}`,
-      };
-    }),
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

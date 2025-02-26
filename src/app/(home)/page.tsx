@@ -1,12 +1,7 @@
-"use client";
-import { trpc } from "@/trpc/client";
-export default function Home() {
-  // const { data } = trpc.hello.useQuery({ text: "Antonio" });
-  const { data } = trpc.Sohail.useQuery("Faiz");
+import { trpc } from "@/trpc/server";
+export default async function Home() {
+  const data = await trpc.hello({ text: "Antonio" });
+  console.log(data);
 
-  return (
-    <div className="">
-      Videos will be displayed here {data?.greeting} {data?.greeting}
-    </div>
-  );
+  return <div className="">Videos will be displayed here {data.greeting}</div>;
 }
