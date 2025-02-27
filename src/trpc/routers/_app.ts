@@ -8,6 +8,7 @@ export const appRouter = createTRPCRouter({
       }),
     )
     .query((opts) => {
+      throw new Error('not implemented');
       return {
         greeting: `hello ${opts.input.text}`,
       };
