@@ -39,11 +39,13 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(opts){
   .from(users)
   .where(eq(users.clerkId,ctx.clerkUserId)) //this will fetch logined user from the db 
 
-  console.log(user);
-  
+  if(!user){
+    throw new TRPCError({code : "UNAUTHORIZED", message: "You must be logged in to access this resource"})
+  }
   return opts.next({
     ctx: {
       ...ctx,
+      user
     }
   })
 })
