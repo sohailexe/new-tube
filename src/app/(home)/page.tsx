@@ -4,7 +4,7 @@ import { HydrateClient } from "@/trpc/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 export default async function Home() {
-  void (await trpc.hello.prefetch({ text: "Antonio" }));
+  void (await trpc.categories.getMany.prefetch());
 
   return (
     <HydrateClient>
