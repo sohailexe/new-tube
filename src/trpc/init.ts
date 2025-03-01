@@ -6,6 +6,8 @@ import { TRPCError } from '@trpc/server';
 import { db } from '@/db';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { ratelimit } from '@/lib/ratelimit';
+import { log } from 'util';
 
 // this function will be called on every request
 export const createTRPCContext = cache(async () => {
@@ -42,6 +44,12 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(opts){
   if(!user){
     throw new TRPCError({code : "UNAUTHORIZED", message: "You must be logged in to access this resource"})
   }
+
+  const {success} = await ratelimit.limit(user.id)  
+  if(!success){
+    throw new TRPCError({code : "TOO_MANY_REQUESTS"})
+  }
+
   return opts.next({
     ctx: {
       ...ctx,
