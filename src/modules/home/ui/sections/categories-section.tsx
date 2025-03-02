@@ -23,7 +23,7 @@ const CategoriesSectionSuspence = ({ categoryId }: CategoriesSectionProps) => {
     value: category.id,
     label: category.name,
   }));
-  return <FilterCrousel value={categoryId} data={data} />;
+  return <FilterCrousel isLoading value={categoryId} data={data} />;
 };
 
 export default CategoriesSection;
