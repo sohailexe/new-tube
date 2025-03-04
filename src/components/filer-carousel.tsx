@@ -57,6 +57,7 @@ const FilterCarousel = ({
           {!isLoading && (
             <CarouselItem className="pl-3 basis-auto">
               <Badge
+                onClick={() => onSelect(null)}
                 variant={!value ? "default" : "secondary"}
                 className="rounded-lg px-3 py-1 cursor-pointer whitespace-nowrap text-sm"
               >
