@@ -11,6 +11,8 @@ import { SidebarContent } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { LogOutIcon, VideoIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import SduioSidebarHeader from "./studio-sidebar-header";
 
 const StudioSidebar = () => {
   const pathname = usePathname();
@@ -19,6 +21,7 @@ const StudioSidebar = () => {
       <SidebarContent className="bg-background">
         <SidebarGroup>
           <SidebarMenu>
+            <SduioSidebarHeader />
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -31,6 +34,7 @@ const StudioSidebar = () => {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <Separator />
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Exit Studio">
                 <Link href="/" className="w-full">
