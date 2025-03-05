@@ -1,4 +1,9 @@
-import { SidebarHeader } from "@/components/ui/sidebar";
+import {
+  SidebarHeader,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import UserAvatar from "@/components/user-avatar";
 import { useUser } from "@clerk/nextjs";
@@ -6,18 +11,39 @@ import Link from "next/link";
 import React from "react";
 
 const SduioSidebarHeader = () => {
+  const { state } = useSidebar();
   const { user } = useUser();
+  // if user not fetched
   if (!user) {
     return (
-      <SidebarHeader className="flex items-center justify-center pb-4 gap-y-1">
+      <SidebarHeader className="flex items-center justify-center pb-4 ">
         <Skeleton className="size-[112px] rounded-full " />
-        <div className="flex flex-col items-center mt-2">
-          <Skeleton className="h-4 w-[80px] mb-2" />
+        <div className="flex flex-col items-center mt-2 gap-y-1">
+          <Skeleton className="h-4 w-[80px] " />
           <Skeleton className="h-4 w-[100px]" />
         </div>
       </SidebarHeader>
     );
   }
+
+  //if sidebar collapsed
+  if (state == "collapsed") {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton tooltip="your profile" asChild>
+          <Link href="/users/current">
+            <UserAvatar
+              imgUrl={user.imageUrl}
+              name={user.fullName ?? "user"}
+              size="sm"
+            />
+            <span className="text-sm">Your Profile</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  }
+  //Main jsx
   return (
     <SidebarHeader className="flex items-center justify-center pb-4">
       <Link href="/users/current">

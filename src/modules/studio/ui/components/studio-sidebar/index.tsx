@@ -21,7 +21,7 @@ const StudioSidebar = () => {
       <SidebarContent className="bg-background">
         <SidebarGroup>
           <SidebarMenu>
-            <SduioSidebarHeader />
+            <SduioSidebarHeader /> {/* sidebar header */}
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
