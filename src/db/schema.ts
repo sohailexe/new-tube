@@ -24,6 +24,10 @@ export const categories =pgTable("categories", {
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 }, (table)=>  [uniqueIndex('name_index').on(table.name)]);
 
+const categoriesRelations = relations(categories, ({many})=>({
+  videos: many(videos)
+}))
+
 
 export const videos = pgTable("videos", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -32,6 +36,9 @@ export const videos = pgTable("videos", {
   userId: uuid("user_id").references(()=>users.id, {
     onDelete:"cascade" //if user id deleted by any chance all the videos will be deleted
   }).notNull(),
+  categoryId: uuid("category_id").references(()=>categories.id, {
+    onDelete: "set null"
+  }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 
@@ -44,5 +51,10 @@ export const videoRelations = relations(videos, ({one,many}) => ({
   user: one(users, {
     fields: [videos.userId],
     references: [users.id]
+  }),
+
+  category: one(categories ,{
+    fields : [videos.categoryId],
+    references: [categories.id ]
   })
 }));
