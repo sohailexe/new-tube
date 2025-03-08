@@ -18,3 +18,14 @@ export const categories =pgTable("categories", {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 }, (table)=>  [uniqueIndex('name_index').on(table.name)]);
+
+
+export const videos = pgTable("videos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title:text("title").notNull(),
+  description: text("description"),
+
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
+
+})
