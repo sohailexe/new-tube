@@ -1,4 +1,5 @@
 import {  pgTable, uuid, timestamp,text,uniqueIndex } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -10,6 +11,10 @@ export const users = pgTable("users", {
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 
 }, (table)=>  [uniqueIndex('clerk_id_index').on(table.clerkId)]);
+
+const userRelations = relations(users, ({many})=>({
+  videos: many(videos)
+}))
 
 export const categories =pgTable("categories", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -24,8 +29,20 @@ export const videos = pgTable("videos", {
   id: uuid("id").primaryKey().defaultRandom(),
   title:text("title").notNull(),
   description: text("description"),
-
+  userId: uuid("user_id").references(()=>users.id, {
+    onDelete:"cascade" //if user id deleted by any chance all the videos will be deleted
+  }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()
 
 })
+
+//Documentation   https://orm.drizzle.team/docs/relations
+// after any changes run        bunx drizzle-kit push
+//defining relations 
+export const videoRelations = relations(videos, ({one,many}) => ({
+  user: one(users, {
+    fields: [videos.userId],
+    references: [users.id]
+  })
+}));
